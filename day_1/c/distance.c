@@ -1,9 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int comp(const void* a, const void* b) {
-    return (*(int*)a - *(int*)b);
-}
+int comp(const void *a, const void *b) { return (*(int *)a - *(int *)b); }
 
 void main() {
   int distance = 0;

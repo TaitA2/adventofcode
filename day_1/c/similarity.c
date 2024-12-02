@@ -7,11 +7,11 @@ int count(int arr[], int n) {
     if (arr[i] == n) {
       count++;
     }
-  }  
+  }
   return count;
 }
 
-void main() {
+int main() {
 
   int arr[2000];
   for (int i = 0; i < 2000; i++) {
@@ -33,4 +33,5 @@ void main() {
     similarity += left[i] * count(right, left[i]);
   }
   printf("%i\n", similarity);
+  return 0;
 }
