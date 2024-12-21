@@ -3,73 +3,76 @@ import time
 
 directions = ["up", "left", "down", "right"]
 
-facing = "up"
+
+def print_map(map):
+    for line in map:
+        print("".join(line))
 
 
-def move_left(map, x, y):
+def move_left(map, x, y, facing):
+    if x == 0:
+        raise IndexError
 
     if map[y][x - 1] != "#":
         map[y][x - 1] = "^"
         map[y][x] = "X"
-        return map, x - 1, y
+        x -= 1
     else:
-        rotate()
-        return map, x, y
+        facing = rotate(facing)
+    return map, x, y, facing
 
 
-def move_right(map, x, y):
+def move_right(map, x, y, facing):
 
     if map[y][x + 1] != "#":
         map[y][x + 1] = "^"
         map[y][x] = "X"
-        return map, x + 1, y
+        x += 1
     else:
-        rotate()
-        return map, x, y
+        facing = rotate(facing)
+    return map, x, y, facing
 
 
-def move_up(map, x, y):
-    # print(*map, sep="\n", end="\n\n\n")
-    # print("moving up!")
+def move_up(map, x, y, facing):
+    if y == 0:
+        raise IndexError
 
     if map[y - 1][x] != "#":
         map[y - 1][x] = "^"
         map[y][x] = "X"
-        return map, x, y - 1
+        y -= 1
     else:
-        rotate()
-        return map, x, y
+        facing = rotate(facing)
+    return map, x, y, facing
     # print(*map, sep="\n", end="\n\n\n")
 
 
-def move_down(map, x, y):
+def move_down(map, x, y, facing):
 
     if map[y + 1][x] != "#":
         map[y + 1][x] = "^"
         map[y][x] = "X"
-        return map, x, y + 1
+        y += 1
     else:
-        rotate()
-        return map, x, y
+        facing = rotate(facing)
+    return map, x, y, facing
 
 
-def rotate():
-    global facing
-    facing = directions[directions.index(facing) - 1]
+def rotate(facing):
+    return directions[directions.index(facing) - 1]
 
 
-def move(map, x, y):
+def move(map, x, y, facing):
 
-    global facing
     match facing:
         case "up":
-            return move_up(map, x, y)
+            return move_up(map, x, y, facing)
         case "right":
-            return move_right(map, x, y)
+            return move_right(map, x, y, facing)
         case "down":
-            return move_down(map, x, y)
+            return move_down(map, x, y, facing)
         case "left":
-            return move_left(map, x, y)
+            return move_left(map, x, y, facing)
     # print(f"moving {facing}")
 
 
@@ -87,6 +90,15 @@ def find_guard(map):
                 return x, y
 
 
+def solve(map, x, y):
+    while True:
+        try:
+            map, x, y = move(map, x, y)
+        except IndexError:
+            break
+    return map, x, y
+
+
 def main():
 
     map = [list(line.strip()) for line in sys.stdin.readlines()]
@@ -99,15 +111,9 @@ def main():
 
     # print(*map, sep="\n", end="\n\n\n")
 
-    while True:
-        try:
-            map, x, y = move(map, x, y)
-        except IndexError:
-            break
-    for line in map:
-        print("".join(line))
-        # time.sleep(0.1)
-    # print(*map, sep="\n", end="\n")
+    map, x, y = solve(map, x, y)
+
+    # time.sleep(0.1)
     total = get_total(map)
 
     print(total)
