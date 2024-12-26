@@ -31,9 +31,9 @@ def check(a):
 
 
 def get_opts(a):
-    opts = [a, a[:-1]]
+    opts = [a]
     i = 1
-    while i < len(a):
+    while i <= len(a):
         opts.append(a[: i - 1] + a[i:])
         i += 1
     return opts

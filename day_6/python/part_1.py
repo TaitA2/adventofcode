@@ -73,7 +73,6 @@ def move(map, x, y, facing):
             return move_down(map, x, y, facing)
         case "left":
             return move_left(map, x, y, facing)
-    # print(f"moving {facing}")
 
 
 def get_total(map):
@@ -90,10 +89,10 @@ def find_guard(map):
                 return x, y
 
 
-def solve(map, x, y):
+def solve(map, x, y, facing):
     while True:
         try:
-            map, x, y = move(map, x, y)
+            map, x, y, facing = move(map, x, y, facing)
         except IndexError:
             break
     return map, x, y
@@ -111,7 +110,7 @@ def main():
 
     # print(*map, sep="\n", end="\n\n\n")
 
-    map, x, y = solve(map, x, y)
+    map, x, y = solve(map, x, y, facing)
 
     # time.sleep(0.1)
     total = get_total(map)
