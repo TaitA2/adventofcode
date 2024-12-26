@@ -6,27 +6,28 @@ def main():
     formatted = format(raw)  # DONE
     print(formatted)
     fixed = fix(formatted)
-    # print(fixed)
+    print(fixed)
     sum = checksum(fixed)
     print(sum)
 
 
 # DONE
 def format(raw):
-    formatted = ""
+    formatted = []
     i = 0
     for j in range(len(raw)):
         char = raw[j]
         if j % 2 != 0:
-            formatted += "." * int(char)
+            formatted += ["."] * int(char)
         else:
-            formatted += str(i) * int(char)
+            formatted += [i] * int(char)
             i += 1
     return formatted
 
 
+# DONE
 def fix(formatted):
-    fixed = ""
+    fixed = []
     i = 0
     j = len(formatted)
     while i < j:
@@ -34,10 +35,9 @@ def fix(formatted):
             j -= 1
             while j >= i and formatted[j] == ".":
                 j -= 1
-            fixed += formatted[j]
+            fixed.append(formatted[j])
         else:
-            fixed += formatted[i]
-        # print(fixed)
+            fixed.append(formatted[i])
         i += 1
 
     return fixed
@@ -46,7 +46,7 @@ def fix(formatted):
 def checksum(fixed):
     sum = 0
     for i in range(len(fixed)):
-        sum += i * int(fixed[i])
+        sum += i * fixed[i]
     return sum
 
 
