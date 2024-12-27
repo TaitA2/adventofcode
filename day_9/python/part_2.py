@@ -2,49 +2,58 @@ import sys
 
 
 def main():
-    raw = sys.stdin.readline()[:-1]
+    raw = sys.stdin.readline().strip()
     formatted = format(raw)  # DONE
     # print(formatted)
     fixed = fix(formatted)
-    print(fixed)
+    # print(fixed)
     sum = checksum(fixed)
     print(sum)
 
 
+# DONE
 def format(raw):
     formatted = []
     i = 0
     for j in range(len(raw)):
         char = raw[j]
         if j % 2 != 0:
-            formatted.append(["."] * int(char))
+            new = ["."] * int(char)
         else:
-            formatted.append([i] * int(char))
+            new = [i] * int(char)
             i += 1
+        if new:
+            formatted.append(new)
     return formatted
 
 
+# DONE
 def fix(formatted):
+    for i in range(len(formatted)):
+        targ = formatted[-i - 1]
+        if "." in targ:
+            continue
+        # print(f"TARG IS {targ}")
+        for j in range(len(formatted) - i):
+            file = formatted[j]
+            if len(targ) <= file.count("."):
+                k = formatted[j].index(".")
+                formatted[j] = (
+                    formatted[j][:k] + targ + ["."] * (len(file) - len(targ) - k)
+                )
+                formatted[-i - 1] = ["."] * len(targ)
+                break
     fixed = []
-    i = 0
-    j = len(formatted)
-    while i < j:
-        if formatted[i] == ".":
-            j -= 1
-            while j >= i and formatted[j] == ".":
-                j -= 1
-            fixed.append(formatted[j])
-        else:
-            fixed.append(formatted[i])
-        i += 1
-
-    return fixed[:-1]
+    for a in formatted:
+        fixed += a
+    return fixed
 
 
 def checksum(fixed):
     sum = 0
     for i in range(len(fixed)):
-        sum += i * fixed[i]
+        if fixed[i] != ".":
+            sum += fixed[i] * i
     return sum
 
 
