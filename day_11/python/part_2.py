@@ -4,7 +4,7 @@ from part_1 import update
 
 def main():
     rocks = input().split()
-    total = solve(rocks, 43)
+    total = solve(rocks, 75)
     print(total)
 
 
