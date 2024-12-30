@@ -1,0 +1,2 @@
+n=$1
+python3 part_$n.py < input.txt
