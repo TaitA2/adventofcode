@@ -18,7 +18,7 @@ func get_rotations() []string {
 
 }
 
-func rotate_dial(rotations []string, start int, max int) int {
+func rotate_dial_1(rotations []string, start int, max int) int {
 	zero_count := 0
 	pos := start
 
@@ -52,10 +52,54 @@ func rotate_dial(rotations []string, start int, max int) int {
 	return zero_count
 }
 
+func rotate_dial_2(rotations []string, start int, max int) int {
+	zero_count := 0
+	pos := start
+
+	for _, r := range rotations {
+		if len(r) < 1 {
+			break
+		}
+		d := r[:1]
+		n, err := strconv.Atoi(r[1:])
+		if err != nil {
+			log.Fatalf("Error converting rotation to int: %v", err)
+		}
+		switch d {
+		case "L":
+			if pos == 0 {
+				zero_count--
+			}
+			pos -= n
+			for pos < 0 {
+				pos += max
+				zero_count++
+			}
+		case "R":
+			pos += n
+			for pos >= max {
+				pos -= max
+				if pos != 0 {
+					zero_count++
+				}
+			}
+
+		}
+		if pos == 0 {
+			zero_count++
+		}
+	}
+
+	return zero_count
+}
+
 func main() {
 	rotations := get_rotations()
 	start := 50
 	max := 100
-	ans := rotate_dial(rotations, start, max)
-	fmt.Println(ans)
+	ans := rotate_dial_1(rotations, start, max)
+	fmt.Println("Part 1: ", ans)
+
+	ans = rotate_dial_2(rotations, start, max)
+	fmt.Println("Part 2: ", ans)
 }
